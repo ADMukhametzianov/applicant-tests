@@ -162,7 +162,13 @@ ORDER BY Month
 Вы должны их найти и вернуть количество дубликатов.
 
 ```sql
--- result here
+SELECT COUNT(*) AS Total_Duplicates
+FROM (
+    SELECT date_time, customer_id, item_id
+    FROM Orders
+    GROUP BY date_time, customer_id, item_id
+    HAVING COUNT(*) > 1
+) AS Duplicates
 ```
 
 ### 7) Найти "важных" покупателей
