@@ -214,7 +214,6 @@ WHERE o.date_time > fo.first_order_date GROUP BY o.customer_id ORDER BY Total_Or
 WITH MonthlyRevenue AS (
     SELECT EXTRACT(MONTH FROM date_time) AS Month, customer_id, SUM(item_price * quantity) AS Revenue
     FROM Orders
-    
     JOIN Items ON Orders.item_id = Items.item_id
     GROUP BY EXTRACT(MONTH FROM date_time), customer_id
 ),
