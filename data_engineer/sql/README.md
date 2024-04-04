@@ -181,9 +181,20 @@ FROM Orders o JOIN Items i ON o.item_id = i.item_id GROUP BY 1 ORDER BY Month
 | #                     | #                             |
 | #                     | #                             |
 
-```sql
--- result here
-```
+**Ответ:**
+
+WITH FirstOrder AS (
+    SELECT customer_id, MIN(date_time) AS first_order_date
+    FROM Orders
+    GROUP BY customer_id
+)
+
+SELECT o.customer_id AS Customer_id, COUNT(*) AS Total_Orders_Count
+FROM Orders o
+JOIN FirstOrder fo ON o.customer_id = fo.customer_id
+WHERE o.date_time > fo.first_order_date
+GROUP BY o.customer_id
+ORDER BY Total_Orders_Count DESC
 
 ### 8) Найти покупателей с "ростом" за последний месяц
 
