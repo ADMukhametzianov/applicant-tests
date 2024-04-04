@@ -189,12 +189,9 @@ WITH FirstOrder AS (
     GROUP BY customer_id
 )
 
-SELECT o.customer_id AS Customer_id, COUNT(*) AS Total_Orders_Count
-FROM Orders o
-JOIN FirstOrder fo ON o.customer_id = fo.customer_id
-WHERE o.date_time > fo.first_order_date
-GROUP BY o.customer_id
-ORDER BY Total_Orders_Count DESC
+SELECT o.customer_id AS Customer_id, COUNT(*) AS Total_Orders_Count FROM Orders o JOIN FirstOrder fo ON o.customer_id = fo.customer_id
+
+WHERE o.date_time > fo.first_order_date GROUP BY o.customer_id ORDER BY Total_Orders_Count DESC
 
 ### 8) Найти покупателей с "ростом" за последний месяц
 
