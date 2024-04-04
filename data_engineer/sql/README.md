@@ -55,12 +55,15 @@ select count (*) from items
 | Italy                     | #                             |
 
 **Ответ:**
+
 SELECT c.country_name, COUNT(DISTINCT cust.customer_id) as customer_count
 
 FROM Customer cust
 
 JOIN Countries c using(country_code)
+
 WHERE c.country_name IN ('Italy', 'France')
+
 GROUP BY c.country_name;
 
 ### 2) ТОП 10 покупателей по расходам
