@@ -19,7 +19,7 @@
    
 3. Результат вывести в stdout (например `print`).
 
-Ответ:
+**Ответ:**
 ```python
 import requests
 import json
