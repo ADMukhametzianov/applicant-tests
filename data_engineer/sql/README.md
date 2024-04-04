@@ -57,8 +57,10 @@ select count (*) from items
 **Ответ:**
 ```sql
 SELECT c.country_name, COUNT(DISTINCT cust.customer_id) as customer_count
-FROM Customer cust JOIN Countries c using(country_code)
-WHERE c.country_name IN ('Italy', 'France') GROUP BY c.country_name;
+FROM Customer cust
+JOIN Countries c using(country_code)
+WHERE c.country_name IN ('Italy', 'France')
+GROUP BY c.country_name;
 ```
 ### 2) ТОП 10 покупателей по расходам
 
@@ -73,13 +75,15 @@ WHERE c.country_name IN ('Italy', 'France') GROUP BY c.country_name;
 | #                      | #           |
 
 **Ответ:**
-
+```sql
 SELECT c.customer_name, SUM(i.item_price * o.quantity) as revenue
-
-FROM Orders o, Customer c, Items i where o.customer_id = c.customer_id and o.item_id = i.item_id
-
-GROUP BY c.customer_name ORDER BY revenue DESC LIMIT 10;
-
+FROM Orders o, Customer c, Items i
+where o.customer_id = c.customer_id
+and o.item_id = i.item_id
+GROUP BY c.customer_name
+ORDER BY revenue DESC
+LIMIT 10;
+``` 
 ### 3) Общая выручка USD по странам, если нет дохода, вернуть NULL
 
 | **Country_name** | **RevenuePerCountry** |
@@ -91,15 +95,15 @@ GROUP BY c.customer_name ORDER BY revenue DESC LIMIT 10;
 | Tanzania                  | #                     |
 
 **Ответ:**
-
+```sql
 SELECT c.country_name, SUM(i.item_price * o.quantity) as revenue
-
-FROM Countries c JOIN Customer ct ON c.country_code = ct.country_code
-
-LEFT JOIN Orders o ON ct.customer_id = o.customer_id JOIN Items i ON o.item_id = i.item_id
-
-GROUP BY c.country_name ORDER BY revenue DESC;
-
+FROM Countries c
+JOIN Customer ct ON c.country_code = ct.country_code
+LEFT JOIN Orders o ON ct.customer_id = o.customer_id
+JOIN Items i ON o.item_id = i.item_id
+GROUP BY c.country_name
+ORDER BY revenue DESC;
+``` 
 ### 4) Самый дорогой товар, купленный одним покупателем
 
 | **Customer\_id** | **Customer\_name** | **MostExpensiveItemName** |
@@ -113,29 +117,24 @@ GROUP BY c.country_name ORDER BY revenue DESC;
 | #                | #                  | #                         |
 
 **Ответ:**
-
+```sql
 SELECT o.customer_id, c.customer_name, i.item_name AS MostExpensiveItemName
-
 FROM Orders o JOIN Customer c ON o.customer_id = c.customer_id
-
 JOIN Items i ON o.item_id = i.item_id
-
 WHERE o.customer_id IN (
     SELECT o2.customer_id
     FROM Orders o2
     GROUP BY o2.customer_id
     HAVING COUNT(DISTINCT o2.item_id) = 1
 )
-
 AND o.quantity * i.item_price = (
     SELECT MAX(o3.quantity * i3.item_price)
     FROM Orders o3
     JOIN Items i3 ON o3.item_id = i3.item_id
     WHERE o3.customer_id = o.customer_id
 )
-
 ORDER BY o.quantity * i.item_price DESC
-
+``` 
 ### 5) Ежемесячный доход
 
 | **Month (MM format)** | **Total Revenue** |
@@ -149,11 +148,13 @@ ORDER BY o.quantity * i.item_price DESC
 | #                     | #                 |
 
 **Ответ:**
-
+```sql
 SELECT EXTRACT(MONTH FROM o.date_time) AS Month, SUM(i.item_price * o.quantity) AS Total_Revenue
-
-FROM Orders o JOIN Items i ON o.item_id = i.item_id GROUP BY 1 ORDER BY Month
-
+FROM Orders o
+JOIN Items i ON o.item_id = i.item_id
+GROUP BY 1
+ORDER BY Month
+``` 
 ### 6) Найти дубликаты
 
 Во время передачи данных произошел сбой, в таблице orders появилось несколько 
