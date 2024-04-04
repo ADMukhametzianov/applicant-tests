@@ -79,12 +79,17 @@ GROUP BY c.country_name;
 | #                      | #           |
 
 **Ответ:**
+
 SELECT c.customer_name, SUM(i.item_price * o.quantity) as revenue
+
 FROM Orders o, Customer c, Items i
-where o.customer_id = c.customer_id
-and o.item_id = i.item_id
+
+where o.customer_id = c.customer_id and o.item_id = i.item_id
+
 GROUP BY c.customer_name
+
 ORDER BY revenue DESC
+
 LIMIT 10;
 
 ### 3) Общая выручка USD по странам, если нет дохода, вернуть NULL
