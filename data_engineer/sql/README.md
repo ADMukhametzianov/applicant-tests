@@ -161,6 +161,7 @@ ORDER BY Month
 дубликатов (несколько результатов возвращаются для date_time + customer_id + item_id). 
 Вы должны их найти и вернуть количество дубликатов.
 
+**Ответ:**
 ```sql
 SELECT COUNT(*) AS Total_Duplicates
 FROM (
