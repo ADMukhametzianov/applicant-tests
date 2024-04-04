@@ -19,6 +19,37 @@
    
 3. Результат вывести в stdout (например `print`).
 
+Ответ:
+```python
+import requests
+import json
+
+posts_url = 'http://jsonplaceholder.typicode.com/posts'
+response = requests.get(posts_url)
+posts = json.loads(response.text)
+comments_url = 'http://jsonplaceholder.typicode.com/comments'
+response = requests.get(comments_url)
+comments = json.loads(response.text)
+
+user_stats = {}
+
+for post in posts:
+    user_id = post['userId']
+    if user_id not in user_stats:
+        user_stats[user_id] = {'total_posts': 0, 'total_comments': 0}
+    user_stats[user_id]['total_posts'] += 1
+    post_comments = [comment for comment in comments if comment['postId'] == post['id']]
+    user_stats[user_id]['total_comments'] += len(post_comments)
+
+average_comments_per_post = {}
+for user_id, stats in user_stats.items():
+    if stats['total_posts'] != 0:
+        average_comments_per_post[user_id] = int(stats['total_comments'] / stats['total_posts'])
+    else:
+        average_comments_per_post[user_id] = 0
+
+print(average_comments_per_post)
+```
 
 ### 2 (качество кода, Dependency Injection, Dependency Inversion)
 
