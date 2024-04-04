@@ -32,7 +32,7 @@ response = requests.get(comments_url)
 comments = json.loads(response.text)
 
 user_stats = {}
-
+# Проходимся по постам и считаем количество комментариев для каждого пользователя
 for post in posts:
     user_id = post['userId']
     if user_id not in user_stats:
@@ -41,6 +41,7 @@ for post in posts:
     post_comments = [comment for comment in comments if comment['postId'] == post['id']]
     user_stats[user_id]['total_comments'] += len(post_comments)
 
+#Считаем среднее количество комментариев на пост для каждого пользователя
 average_comments_per_post = {}
 for user_id, stats in user_stats.items():
     if stats['total_posts'] != 0:
