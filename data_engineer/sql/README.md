@@ -181,17 +181,19 @@ ORDER BY Month
 | #                     | #                             |
 
 **Ответ:**
-
+```sql
 WITH FirstOrder AS (
     SELECT customer_id, MIN(date_time) AS first_order_date
     FROM Orders
     GROUP BY customer_id
 )
-
-SELECT o.customer_id AS Customer_id, COUNT(*) AS Total_Orders_Count FROM Orders o JOIN FirstOrder fo ON o.customer_id = fo.customer_id
-
-WHERE o.date_time > fo.first_order_date GROUP BY o.customer_id ORDER BY Total_Orders_Count DESC
-
+SELECT o.customer_id AS Customer_id, COUNT(*) AS Total_Orders_Count
+FROM Orders o
+JOIN FirstOrder fo ON o.customer_id = fo.customer_id
+WHERE o.date_time > fo.first_order_date
+GROUP BY o.customer_id
+ORDER BY Total_Orders_Count DESC
+```
 ### 8) Найти покупателей с "ростом" за последний месяц
 
 Написать запрос, который найдет всех клиентов,
@@ -209,25 +211,22 @@ WHERE o.date_time > fo.first_order_date GROUP BY o.customer_id ORDER BY Total_Or
 | #                     | #                 |
 
 **Ответ:**
-
+```sql
 WITH MonthlyRevenue AS (
     SELECT EXTRACT(MONTH FROM date_time) AS Month, customer_id, SUM(item_price * quantity) AS Revenue
     FROM Orders
     JOIN Items ON Orders.item_id = Items.item_id
     GROUP BY EXTRACT(MONTH FROM date_time), customer_id
 ),
-
 AverageRevenue AS (
     SELECT AVG(Revenue) AS Avg_Revenue
     FROM MonthlyRevenue
 )
-
 SELECT mr.customer_id, SUM(mr.Revenue) AS Total_Revenue
 FROM MonthlyRevenue mr
 JOIN AverageRevenue ar ON 1=1
-
 WHERE mr.Month = EXTRACT(MONTH FROM CURRENT_DATE - INTERVAL '1 month')
 GROUP BY mr.customer_id
-
 HAVING SUM(mr.Revenue) > ar.Avg_Revenue
 ORDER BY Total_Revenue DESC
+```
