@@ -93,6 +93,7 @@ GROUP BY c.customer_name ORDER BY revenue DESC LIMIT 10;
 | Tanzania                  | #                     |
 
 **Ответ:**
+
 SELECT c.country_name, SUM(i.item_price * o.quantity) as revenue
 
 FROM Countries c JOIN Customer ct ON c.country_code = ct.country_code
@@ -114,6 +115,7 @@ GROUP BY c.country_name ORDER BY revenue DESC;
 | #                | #                  | #                         |
 
 **Ответ:**
+
 SELECT o.customer_id, c.customer_name, i.item_name AS MostExpensiveItemName
 
 FROM Orders o JOIN Customer c ON o.customer_id = c.customer_id
@@ -123,7 +125,6 @@ JOIN Items i ON o.item_id = i.item_id
 WHERE o.customer_id IN (
     SELECT o2.customer_id
     FROM Orders o2
-    
     GROUP BY o2.customer_id
     HAVING COUNT(DISTINCT o2.item_id) = 1
 )
@@ -131,7 +132,6 @@ WHERE o.customer_id IN (
 AND o.quantity * i.item_price = (
     SELECT MAX(o3.quantity * i3.item_price)
     FROM Orders o3
-    
     JOIN Items i3 ON o3.item_id = i3.item_id
     WHERE o3.customer_id = o.customer_id
 )
