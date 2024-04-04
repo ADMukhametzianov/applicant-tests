@@ -150,9 +150,11 @@ ORDER BY o.quantity * i.item_price DESC
 | #                     | #                 |
 | #                     | #                 |
 
-```sql
--- result here
-```
+**Ответ:**
+
+SELECT EXTRACT(MONTH FROM o.date_time) AS Month, SUM(i.item_price * o.quantity) AS Total_Revenue
+
+FROM Orders o JOIN Items i ON o.item_id = i.item_id GROUP BY 1 ORDER BY Month
 
 ### 6) Найти дубликаты
 
