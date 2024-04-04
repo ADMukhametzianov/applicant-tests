@@ -54,7 +54,7 @@ select count (*) from items
 | France                    | #                             |
 | Italy                     | #                             |
 
-Ответ:
+**Ответ:**
 SELECT c.country_name, COUNT(DISTINCT cust.customer_id) as customer_count
 FROM Customer cust
 JOIN Countries c using(country_code)
@@ -73,9 +73,14 @@ GROUP BY c.country_name;
 | #                      | #           |
 | #                      | #           |
 
-```sql
--- result here
-```
+**Ответ:**
+SELECT c.customer_name, SUM(i.item_price * o.quantity) as revenue
+FROM Orders o, Customer c, Items i
+where o.customer_id = c.customer_id
+and o.item_id = i.item_id
+GROUP BY c.customer_name
+ORDER BY revenue DESC
+LIMIT 10;
 
 ### 3) Общая выручка USD по странам, если нет дохода, вернуть NULL
 
