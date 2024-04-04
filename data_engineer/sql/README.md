@@ -58,13 +58,9 @@ select count (*) from items
 
 SELECT c.country_name, COUNT(DISTINCT cust.customer_id) as customer_count
 
-FROM Customer cust
+FROM Customer cust JOIN Countries c using(country_code)
 
-JOIN Countries c using(country_code)
-
-WHERE c.country_name IN ('Italy', 'France')
-
-GROUP BY c.country_name;
+WHERE c.country_name IN ('Italy', 'France') GROUP BY c.country_name;
 
 ### 2) ТОП 10 покупателей по расходам
 
@@ -82,15 +78,9 @@ GROUP BY c.country_name;
 
 SELECT c.customer_name, SUM(i.item_price * o.quantity) as revenue
 
-FROM Orders o, Customer c, Items i
+FROM Orders o, Customer c, Items i where o.customer_id = c.customer_id and o.item_id = i.item_id
 
-where o.customer_id = c.customer_id and o.item_id = i.item_id
-
-GROUP BY c.customer_name
-
-ORDER BY revenue DESC
-
-LIMIT 10;
+GROUP BY c.customer_name ORDER BY revenue DESC LIMIT 10;
 
 ### 3) Общая выручка USD по странам, если нет дохода, вернуть NULL
 
@@ -102,9 +92,14 @@ LIMIT 10;
 | Germany                   | #                     |
 | Tanzania                  | #                     |
 
-```sql
--- result here
-```
+**Ответ:**
+SELECT c.country_name, SUM(i.item_price * o.quantity) as revenue
+
+FROM Countries c JOIN Customer ct ON c.country_code = ct.country_code
+
+LEFT JOIN Orders o ON ct.customer_id = o.customer_id JOIN Items i ON o.item_id = i.item_id
+
+GROUP BY c.country_name ORDER BY revenue DESC;
 
 ### 4) Самый дорогой товар, купленный одним покупателем
 
