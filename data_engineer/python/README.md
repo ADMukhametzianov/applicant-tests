@@ -23,7 +23,7 @@
 ```python
 import requests
 import json
-
+# Забираем посты и комментарии
 posts_url = 'http://jsonplaceholder.typicode.com/posts'
 response = requests.get(posts_url)
 posts = json.loads(response.text)
